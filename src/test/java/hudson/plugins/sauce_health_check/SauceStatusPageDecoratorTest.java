@@ -13,6 +13,9 @@ public class SauceStatusPageDecoratorTest {
 
     private SauceStatusPageDecorator pageDecorator;
 
+    /**
+     * Validates the behaviour of the {@link SauceStatusPageDecorator} when 'Sauce Labs down' response is returned.
+     */
     @Test
     public void errorResponse() {
 
@@ -28,6 +31,9 @@ public class SauceStatusPageDecoratorTest {
 
     }
 
+    /**
+     * Validates the behaviour of the {@link SauceStatusPageDecorator} when 'service is up' response is returned.
+     */
     @Test
     public void successResponse() {
         SauceStatusHelper statusHelper = new SauceStatusHelper() {
@@ -41,6 +47,9 @@ public class SauceStatusPageDecoratorTest {
         assertEquals("Sauce status mismatch", "Basic service status checks passed.", pageDecorator.getsauceStatus());
     }
 
+    /**
+     * Validates the behaviour of the {@link SauceStatusPageDecorator} when an error response is returned.
+     */
     @Test
     public void invalidResponse() {
         SauceStatusHelper statusHelper = new SauceStatusHelper() {
