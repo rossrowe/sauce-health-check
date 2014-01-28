@@ -1,4 +1,4 @@
-package hudson.plugins.sauce_health_check;
+package com.saucelabs.health_check;
 
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;

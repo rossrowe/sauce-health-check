@@ -1,0 +1,23 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <span id="sauce_status">
+        <div id="progress" style="display:none;">
+            <img src="${imagesURL}/spinner.gif"/>
+        </div>
+        Sauce status:
+        <span id="sauce_status_msg" class="${it.sauceStatusClass}">${it.sauceStatus}</span>
+        <a href="#" onclick="checkStatus();">Check now</a>
+
+        <script>
+            function checkStatus() {
+                document.getElementById('progress').style = 'display:block;';
+                var plugin =
+                <st:bind value="${it}"/>
+                plugin.checkStatusNow(function(t) {
+                    document.getElementById('sauce_status_msg').innerHTML = t.responseObject();
+                    document.getElementById('progress').style = 'display:none;';
+                })
+            }
+        </script>
+    </span>
+</j:jelly>

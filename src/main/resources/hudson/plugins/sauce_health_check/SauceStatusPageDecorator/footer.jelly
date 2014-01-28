@@ -1,4 +1,0 @@
-<j:jelly xmlns:j="jelly:core"
-         xmlns:f="/lib/form">
-    <span id="sauce_status">Sauce status: ${it.sauceStatus}</span>
-</j:jelly>

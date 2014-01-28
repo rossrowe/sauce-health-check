@@ -1,4 +1,4 @@
-package hudson.plugins.sauce_health_check;
+package com.saucelabs.health_check;
 
 import org.junit.Test;
 
@@ -7,11 +7,13 @@ import java.net.URL;
 import static org.junit.Assert.assertEquals;
 
 /**
+ * Unit test which validates the behaviour of the {@link SauceStatusPageDecorator} class by simulating expected responses from
+ * the Sauce REST API.
+ *
  * @author Ross Rowe
  */
 public class SauceStatusPageDecoratorTest {
 
-    private SauceStatusPageDecorator pageDecorator;
 
     /**
      * Validates the behaviour of the {@link SauceStatusPageDecorator} when 'Sauce Labs down' response is returned.
@@ -26,7 +28,7 @@ public class SauceStatusPageDecoratorTest {
                 return "{\"service_operational\" : false, \"status_message\" : \"Sauce Labs down\"}";
             }
         };
-        pageDecorator = new SauceStatusPageDecorator(statusHelper);
+        SauceStatusPageDecorator pageDecorator = new SauceStatusPageDecorator(statusHelper);
         assertEquals("Sauce status mismatch", "Sauce Labs down", pageDecorator.getsauceStatus());
 
     }
@@ -43,12 +45,12 @@ public class SauceStatusPageDecoratorTest {
                 return "{\"service_operational\" : true, \"status_message\" : \"Basic service status checks passed.\"}";
             }
         };
-        pageDecorator = new SauceStatusPageDecorator(statusHelper);
+        SauceStatusPageDecorator pageDecorator = new SauceStatusPageDecorator(statusHelper);
         assertEquals("Sauce status mismatch", "Basic service status checks passed.", pageDecorator.getsauceStatus());
     }
 
     /**
-     * Validates the behaviour of the {@link SauceStatusPageDecorator} when an error response is returned.
+     * Validates the behaviour of the {@link SauceStatusPageDecorator} when an empty string (error response) is returned.
      */
     @Test
     public void invalidResponse() {
@@ -59,7 +61,7 @@ public class SauceStatusPageDecoratorTest {
                 return "";
             }
         };
-        pageDecorator = new SauceStatusPageDecorator(statusHelper);
+        SauceStatusPageDecorator pageDecorator = new SauceStatusPageDecorator(statusHelper);
         assertEquals("Sauce status mismatch", "Unknown", pageDecorator.getsauceStatus());
     }
 

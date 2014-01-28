@@ -99,7 +99,31 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- ci-sauce is contained in the https://repository-saucelabs.forge.cloudbees.com/release Maven repository -->
+        <dependency>
+            <groupId>com.saucelabs</groupId>
+            <artifactId>ci-sauce</artifactId>
+            <version>1.38</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-remote-driver</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>saucelabs-repository</id>
+            <url>https://repository-saucelabs.forge.cloudbees.com/release</url>
+        </repository>
+    </repositories>
 
 
 </project>
