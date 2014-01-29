@@ -9,11 +9,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Runs a series of tests which verify that the plugin's functionality works in a 'live' environment.
@@ -52,21 +54,41 @@ public class AcceptanceIT {
     @Test
     public void statusIsOkay() {
         WebElement sauceStatus = webDriver.findElement(By.id("sauce_status"));
+
         assertNotNull("Status not found", sauceStatus);
+        WebElement sauceStatusMessage = webDriver.findElement(By.id("sauce_status_msg"));
+        assertEquals("Status text not expected", "Basic service status checks passed.", sauceStatusMessage.getText());
     }
 
     /**
-     * Click links to verify that footer displays on each page
+     * Click links to verify that the custom footer displays on each page.  This test also
+     * demonstrates the various mechanisms you can use to select elements on page, using
+     * the link text, element id, xpath and css selectors.
      */
     @Test
     public void navigation() {
 
-
-        WebElement sauceStatus = webDriver.findElement(By.id("sauce_status"));
-        assertNotNull("Status not found", sauceStatus);
-
+        assertNotNull("Status not found", webDriver.findElement(By.id("sauce_status")));
         //click on Manage Jenkins
+        webDriver.findElement(By.linkText("Manage Jenkins")).click();
+        //It takes a few seconds for the page to load, so instead of running Thread.sleep(), we use the WebDriverWait construct
+        WebDriverWait wait = new WebDriverWait(webDriver, 30);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("h1")));
+        assertNotNull("Status not found", webDriver.findElement(By.id("sauce_status")));
 
+        //Click the 'New Job' link using the link text as a selector
+        webDriver.findElement(By.linkText("New Job")).click();
+        assertNotNull("Status not found", webDriver.findElement(By.id("sauce_status")));
+
+        //Click on the 'Jenkins' link in the navigation bar using a XPath expression
+        webDriver.findElement(By.xpath("//ul[@id=\"breadcrumbs\"]//a[1]")).click();
+        //wait until the 'Welcome to Jenkins' div is visible
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@id='main-panel']/div[2][contains(text(), 'Welcome to Jenkins!')]")));
+        assertNotNull("Status not found", webDriver.findElement(By.id("sauce_status")));
+
+        //Click on the UI Samples link using a CSS selector
+        webDriver.findElement(By.cssSelector("div.task:nth-child(5) > a:nth-child(2)")).click();
+        assertNotNull("Status not found", webDriver.findElement(By.id("sauce_status")));
     }
 
     /**
@@ -78,6 +100,28 @@ public class AcceptanceIT {
         assertNotNull("Status not found", sauceStatus);
         String colour = sauceStatus.getCssValue("color");
         assertEquals("Colour not green", "rgba(0, 128, 0, 1)", colour);
+    }
+
+    /**
+     * Verifies the behaviour of clicking on the 'Check Now' link, which performs an Ajax call to re-query the Sauce status.
+     */
+    @Test
+    public void ajaxAction() {
+        WebElement sauceStatusProgressImage = webDriver.findElement(By.id("sauce_status_progress"));
+        WebElement sauceStatusMessage = webDriver.findElement(By.id("sauce_status_msg"));
+        assertFalse("Element is visible", sauceStatusProgressImage.isDisplayed());
+        WebElement checkNowLink = webDriver.findElement(By.id("sauce_check_status_now"));
+        assertNotNull("Status not found", checkNowLink);
+        //click the link
+        checkNowLink.click();
+        //verify that the loading image is displayed and the status has changed to Checking...
+        assertTrue("Element is not visible", sauceStatusProgressImage.isDisplayed());
+        assertEquals("Status text not 'Checking'", "Checking...", sauceStatusMessage.getText());
+
+        //wait until the status
+        WebDriverWait wait = new WebDriverWait(webDriver, 30);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("sauce_status_progress")));
+        assertEquals("Status text not expected", "Basic service status checks passed.", sauceStatusMessage.getText());
     }
 
     /**

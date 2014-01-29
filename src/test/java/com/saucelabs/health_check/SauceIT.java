@@ -1,7 +1,9 @@
 package com.saucelabs.health_check;
 
 import com.saucelabs.ci.sauceconnect.SauceConnectTwoManager;
-import org.junit.*;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -88,7 +90,7 @@ public class SauceIT {
      *
      * @throws IOException if an error occurs starting Sauce Connect
      */
-    @BeforeClass
+//    @BeforeClass
     public static void startSauceConnect() throws IOException {
         sauceConnectManager.openConnection("SAUCE_USER", "SAUCE_ACCESS_KEY", 4445, null, null, null, null);
     }
@@ -98,7 +100,7 @@ public class SauceIT {
      *
      * @throws Exception if an error occurrs stopping the Sauce Connect process
      */
-    @AfterClass
+//    @AfterClass
     public static void stopSauceConnect() throws Exception {
         sauceConnectManager.closeTunnelsForPlan("SAUCE_USER", null);
     }
@@ -108,7 +110,7 @@ public class SauceIT {
      *
      * @throws Exception thrown if an unexpected error occurs
      */
-    @Before
+//    @Before
     public void setUp() throws Exception {
         DesiredCapabilities capabilities = DesiredCapabilities.firefox();
         capabilities.setCapability(CapabilityType.BROWSER_NAME, browser);
@@ -126,6 +128,7 @@ public class SauceIT {
      * Verifies that the plugin has been installed correctly.
      */
     @Test
+    @Ignore
     public void statusIsOkay() {
         WebElement sauceStatus = webDriver.findElement(By.id("sauce_status"));
         assertNotNull("Status not found", sauceStatus);
@@ -135,6 +138,7 @@ public class SauceIT {
      * Click links to verify that footer displays on each page
      */
     @Test
+    @Ignore
     public void navigation() {
 
 
@@ -149,6 +153,7 @@ public class SauceIT {
      * Verifies the colour of the status element.
      */
     @Test
+    @Ignore
     public void colourOfStatus() {
         WebElement sauceStatus = webDriver.findElement(By.className("sauce_up"));
         assertNotNull("Status not found", sauceStatus);
@@ -161,7 +166,7 @@ public class SauceIT {
      *
      * @throws Exception thrown if an unexpected error occurs
      */
-    @After
+//    @After
     public void tearDown() throws Exception {
         webDriver.quit();
     }

@@ -56,8 +56,18 @@ public class SauceStatusPageDecorator extends PageDecorator {
         return "sauce_down";
     }
 
+    /**
+     * Method which is exposed as a javascript method.
+     * @return
+     */
     @JavaScriptMethod
     public String checkStatusNow() {
+        //Wait for 5 seconds to simulate some server activity
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return getsauceStatus();
     }
 }

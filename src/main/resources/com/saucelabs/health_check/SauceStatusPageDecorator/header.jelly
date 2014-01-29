@@ -1,6 +1,6 @@
 <j:jelly xmlns:j="jelly:core"
          xmlns:f="/lib/form">
-    <script src="/plugin/sauce-health-check/jquery.js"></script>
+    <!--<script src="/plugin/sauce-health-check/jquery-1.11.0.min.js"></script>-->
     <style type="text/css">
         .sauce_up {
            color : green;
