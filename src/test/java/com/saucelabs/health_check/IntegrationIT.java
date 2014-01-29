@@ -18,7 +18,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Integration test which performs a minimal set of validation to ensure that the plugin is installed correctly.
+ * Integration tests which use Selenium to performs a minimal set of validation to ensure that
+ * the plugin is installed and integrates with Jenkins correctly.
  *
  * @author Ross Rowe
  */

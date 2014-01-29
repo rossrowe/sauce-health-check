@@ -4,6 +4,9 @@ import hudson.Extension;
 import hudson.model.PageDecorator;
 import org.kohsuke.stapler.bind.JavaScriptMethod;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Supporting class which handles retrieving the Sauce system status to be displayed on the Jenkins UI.
  * <p/>
@@ -13,6 +16,8 @@ import org.kohsuke.stapler.bind.JavaScriptMethod;
  */
 @Extension
 public class SauceStatusPageDecorator extends PageDecorator {
+
+    private static final Logger logger = Logger.getLogger(SauceStatusPageDecorator.class.getName());
 
     /**
      * Handles performing the Sauce REST API call.
@@ -57,8 +62,10 @@ public class SauceStatusPageDecorator extends PageDecorator {
     }
 
     /**
-     * Method which is exposed as a javascript method.
-     * @return
+     * Method which is invoked as an AJAX call when the 'Check Now' link is clicked. This method waits for 5 seconds
+     * before executing the Sauce REST API call to simulate server activity.
+     *
+     * @return the Sauce system status via the Sauce REST API
      */
     @JavaScriptMethod
     public String checkStatusNow() {
@@ -66,7 +73,7 @@ public class SauceStatusPageDecorator extends PageDecorator {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Thread interrupted");
         }
         return getsauceStatus();
     }

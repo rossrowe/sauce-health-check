@@ -18,7 +18,11 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Runs a series of tests which verify that the plugin's functionality works in a 'live' environment.
+ * Runs a series of tests using Selenium which verify that the plugin's functionality works in a 'live' environment.
+ *
+ * For ease of demonstration, these tests use the local Jenkins instance supplied by the {@link JenkinsRule},
+ * but these tests could instead be configured to run against a live Jenkins environment by changing the url
+ * referenced by the {@link #webDriver} instance.
  *
  * @author Ross Rowe
  */
